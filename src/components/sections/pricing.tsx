@@ -167,10 +167,21 @@ export function Pricing({ data }: { data: HomeContent["pricing"] }) {
  * it is on a white tile with the funnel drawn beside it, the starting price on
  * a dark one. Thinner than the plan cards and built differently on purpose —
  * it is an add-on with one starting price, not more plans to compare.
+ *
+ * `payments` adds the card marks under the button, for where it goes straight
+ * to checkout (the pricing table) rather than to a call.
  */
-function FunnelBanner({ data }: { data: HomeContent["pricing"]["funnel"] }) {
+export function FunnelBanner({
+  data,
+  payments = false,
+  className = "mt-16 md:mt-20",
+}: {
+  data: HomeContent["pricing"]["funnel"];
+  payments?: boolean;
+  className?: string;
+}) {
   return (
-    <Reveal className="mt-16 grid gap-4 md:mt-20 lg:grid-cols-3" stagger={0.12}>
+    <Reveal className={`grid gap-4 lg:grid-cols-3 ${className}`} stagger={0.12}>
       <article className="relative overflow-hidden rounded-[28px] border border-line bg-white p-7 sm:p-9 lg:col-span-2">
         <FunnelArt className="pointer-events-none absolute top-1/2 -right-4 hidden h-[86%] -translate-y-1/2 md:block" />
         <div className="relative md:max-w-[58%]">
@@ -210,7 +221,10 @@ function FunnelBanner({ data }: { data: HomeContent["pricing"]["funnel"] }) {
           </p>
           {data.note ? <p className="mt-3 text-[14px] leading-snug text-white/70">{data.note}</p> : null}
         </div>
-        <Button cta={data.cta} variant="white" className="relative mt-8 w-full" />
+        <div className="relative mt-8">
+          <Button cta={data.cta} variant="white" className="w-full" />
+          {payments ? <PaymentMarks className="mt-4" /> : null}
+        </div>
       </article>
     </Reveal>
   );

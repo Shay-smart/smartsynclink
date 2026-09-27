@@ -353,6 +353,22 @@ export const defaultPricingTable = {
     ],
   },
 
+  /**
+   * The SmartSync Funnel banner under the platform plans — the home page's
+   * banner, but its button goes to the funnel's own checkout like the plans'
+   * do. An empty heading hides it.
+   */
+  funnel: {
+    heading: "Funnels that turn clicks into booked calls.",
+    body: "Conversion-focused funnel pages, lead capture and automated follow-up — built, hosted and connected to your SmartSync Suite.",
+    highlights: ["Done-for-you funnel pages", "Lead capture on every step", "Automated follow-up", "Live conversion metrics"],
+    priceLabel: "Starts at",
+    price: "$297",
+    unit: "/month",
+    note: "Built, hosted and connected for you.",
+    cta: { label: "Get Started", href: "https://funnel.smartsynclink.com/smart-sync-funnel-check-out" } as Cta,
+  },
+
   standard: {
     heading: "Platform Standard Features",
     items: ["SSL Secure", "iOS & Android App", "Cloud Hosting", "Unlimited Leads"],

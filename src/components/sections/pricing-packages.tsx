@@ -3,7 +3,7 @@ import { Reveal } from "../reveal";
 import { SuiteLockup } from "../suite-logo";
 import { GradientText, Rich } from "../rich";
 import { Badge, Container, SectionHead } from "../ui";
-import { PlanCards } from "./pricing";
+import { FunnelBanner, PlanCards } from "./pricing";
 
 /** Icons for the standard-feature tiles, in the order the content lists them. */
 const STANDARD_ICONS = [
@@ -25,7 +25,7 @@ const STANDARD_ICONS = [
 
 /**
  * "Choose Your Power Level": quick-start packages, extras, the platform plans,
- * standard features and the Local SEO packages.
+ * the SmartSync Funnel banner, standard features and the Local SEO packages.
  */
 export function PricingPackages({ data }: { data: PricingTableContent }) {
   return (
@@ -74,6 +74,9 @@ export function PricingPackages({ data }: { data: PricingTableContent }) {
 
         {/* full platform plans */}
         <PlanCards plans={data.platform.plans} className="mt-24" />
+
+        {/* smartsync funnel, straight to its checkout */}
+        {data.funnel?.heading ? <FunnelBanner data={data.funnel} payments className="mt-8" /> : null}
 
         {/* included with every plan */}
         <Reveal className="mx-auto mt-20 max-w-[920px] rounded-[22px] border border-line bg-white px-6 py-10 shadow-card sm:px-10">
