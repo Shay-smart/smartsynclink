@@ -197,8 +197,11 @@ export const defaultGlobal = {
     newsletter: {
       heading: "Get Practical Automation Tips Delivered to Your Inbox",
       body: "Join thousands of business owners receiving proven strategies, product updates, and automation insights.",
+      namePlaceholder: "Your Name",
       placeholder: "Email Address",
       cta: { label: "Subscribe", href: "#subscribe" } as Cta,
+      /** Shown in place of the form once the person is in GHL. */
+      success: "Thanks — you're subscribed.",
     },
     contact: {
       phone: "+1 737 252-4262",

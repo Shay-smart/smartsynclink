@@ -1,6 +1,6 @@
 import type { Media as MediaItem } from "@/content/home";
 import type { IndustryContent } from "@/content/industry";
-import { HeroChips } from "../hero-chips";
+import { HeroIcons } from "../hero-icons";
 import { ReelSlider } from "../reel-slider";
 import { Button, Container, Media, Tick } from "../ui";
 
@@ -10,18 +10,6 @@ import { Button, Container, Media, Tick } from "../ui";
  * badge and heading are left out (PageShell hands the clips over). Without
  * reels it is the centred hero it always was.
  */
-/**
- * The chips around the badge and heading. Centred over the clips on a phone,
- * as on the home hero; beside them from lg, where the right-hand pair stays
- * inside the text column instead of reaching into the clips.
- */
-const INDUSTRY_CHIP_SPOTS = [
-  "-top-10 left-[-2%] sm:-left-3 lg:-left-6",
-  "-top-12 right-[-2%] sm:-right-3 lg:right-0",
-  "-bottom-14 left-[4%] sm:left-0 lg:-bottom-16 lg:left-2",
-  "-bottom-14 right-[3%] sm:right-2 lg:-bottom-16 lg:right-8",
-];
-
 export function IndustryHero({ data, reels }: { data: IndustryContent["hero"]; reels?: MediaItem[] }) {
   const split = Boolean(reels?.length);
   // centred alone; left-aligned beside the clips from lg, centred above them below it
@@ -30,11 +18,9 @@ export function IndustryHero({ data, reels }: { data: IndustryContent["hero"]; r
   const row = split ? "justify-center lg:justify-start" : "justify-center";
 
   // two pieces, so that on a phone the clips can sit between them. The head
-  // carries the floating chips at its corners, as the home hero does; the
-  // margins make room for them above the badge and under the heading.
+  // ends with the same icon row as the home hero.
   const head = (
-    <div className="relative mt-10 mb-12 lg:mb-16">
-      <HeroChips spots={INDUSTRY_CHIP_SPOTS} />
+    <div>
       <p
         className={`rise text-[13px] font-normal uppercase tracking-[0.18em] text-[#1E1E1E]/70 ${align}`}
         style={{ "--i": 0 } as React.CSSProperties}
@@ -50,6 +36,11 @@ export function IndustryHero({ data, reels }: { data: IndustryContent["hero"]; r
       >
         {data.heading}
       </h1>
+      <HeroIcons
+        align={split ? "start" : "center"}
+        className="rise mt-7"
+        style={{ "--i": 2 } as React.CSSProperties}
+      />
     </div>
   );
 

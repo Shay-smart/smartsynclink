@@ -24,8 +24,9 @@ import type { HomeContent } from "@/content/home";
  * loaded, or the moment a finger or pointer comes down on a #demo link,
  * whichever is first. By the time the dialog shows, the button is there.
  *
- * On a phone the dialog is the whole screen — a phone drawn inside a phone
- * only squeezed it — and from sm up it is the handset mockup.
+ * The handset keeps a real phone's 9 : 19.5 on every screen, phones included
+ * (.demo-screen in globals.css) — sized by the height the window has, so on a
+ * short phone screen it gets slimmer, never stubbier.
  */
 const WARM_AFTER_LOAD_MS = 3000;
 const DEMO_LINK = 'a[href="#demo"], a[href$="/#demo"]';
@@ -114,32 +115,31 @@ export function DemoModal({ data }: { data: HomeContent["demo"] }) {
       aria-modal="true"
       aria-hidden={!open}
       aria-label={`${data.agentName} — ${data.role}`}
-      className={`fixed inset-0 z-[10000] items-center justify-center overflow-y-auto bg-ink/60 p-4 backdrop-blur-sm max-sm:p-0 ${
+      className={`fixed inset-0 z-[10000] items-center justify-center overflow-y-auto bg-ink/60 p-4 backdrop-blur-sm ${
         open ? "flex" : "hidden"
       }`}
       onClick={(event) => {
         if (event.target === event.currentTarget) close();
       }}
     >
-      <div className="relative my-auto max-sm:m-0 max-sm:size-full">
+      <div className="relative my-auto">
         <button
           onClick={close}
           aria-label="Close"
-          className="absolute -top-3 -right-3 z-10 grid size-9 place-items-center rounded-full bg-white text-ink shadow-lift transition-transform hover:scale-105 max-sm:top-3 max-sm:right-3 max-sm:bg-surface max-sm:shadow-none"
+          className="absolute -top-3 -right-3 z-10 grid size-9 place-items-center rounded-full bg-white text-ink shadow-lift transition-transform hover:scale-105"
         >
           <svg viewBox="0 0 20 20" aria-hidden="true" className="size-4 fill-current">
             <path d="m10 8.6 5-5 1.4 1.4-5 5 5 5-1.4 1.4-5-5-5 5L3.6 15l5-5-5-5L10 3.6z" />
           </svg>
         </button>
 
-        {/* the handset — from sm up; on a phone, just the screen, full size */}
-        <div className="rounded-[46px] bg-[#0E0E14] p-2.5 shadow-[0_40px_80px_-30px_rgba(14,14,20,.65)] ring-1 ring-white/10 max-sm:size-full max-sm:rounded-none max-sm:p-0 max-sm:shadow-none max-sm:ring-0">
-          {/* sized by .demo-screen in globals.css: the whole screen on a phone,
-              a 9 : 19.5 handset from sm up */}
+        {/* the handset */}
+        <div className="rounded-[46px] bg-[#0E0E14] p-2.5 shadow-[0_40px_80px_-30px_rgba(14,14,20,.65)] ring-1 ring-white/10">
+          {/* sized by .demo-screen in globals.css: a phone's proportions on
+              every screen, a phone's included */}
           <div className="demo-screen relative flex flex-col overflow-hidden bg-page">
-            {/* status bar, with the notch between the two halves — the mockup's
-                own; a real phone already has one */}
-            <div className="relative flex shrink-0 items-center justify-between bg-white px-6 pt-3 pb-1.5 text-[13px] font-semibold text-ink max-sm:hidden">
+            {/* status bar, with the notch between the two halves */}
+            <div className="relative flex shrink-0 items-center justify-between bg-white px-6 pt-3 pb-1.5 text-[13px] font-semibold text-ink">
               <span>9:41</span>
               <span
                 aria-hidden="true"
@@ -149,7 +149,7 @@ export function DemoModal({ data }: { data: HomeContent["demo"] }) {
             </div>
 
             {/* who you are talking to */}
-            <div className="flex shrink-0 items-center gap-3 border-b border-line bg-white px-4 pt-1 pb-3 max-sm:pt-4 max-sm:pr-16">
+            <div className="flex shrink-0 items-center gap-3 border-b border-line bg-white px-4 pt-1 pb-3">
               <span className="relative size-10 shrink-0">
                 <Avatar src={data.avatar?.src} alt={data.avatar?.alt || data.agentName} big={false} />
                 <span className="absolute right-0 bottom-0 size-3 rounded-full border-2 border-white bg-[#22c55e]" />
@@ -175,14 +175,16 @@ export function DemoModal({ data }: { data: HomeContent["demo"] }) {
               {/* the widget mounts here, where the next reply would be */}
               <div
                 ref={embed}
-                // LeadConnector lays the widget out 380px wide with the call
-                // pill centred in it, wider than this screen; centring that box
-                // here keeps the pill in the middle of the phone, not off its edge
-                className="mt-auto w-full [&>chat-widget]:mx-[calc((100%-380px)/2)] [&>chat-widget]:block [&>chat-widget]:w-[380px] [&>div]:!w-full [&_iframe]:!w-full"
+                // LeadConnector lays the widget out min(380px, 100vw − 32px)
+                // wide — its own box, sized by the window, not by this phone —
+                // with the call pill centred in it. That box is wider than this
+                // screen, so it is sized the same way here and centred: the pill
+                // lands in the middle of the phone at every width, not off an edge
+                className="mt-auto w-full [&>chat-widget]:mx-[calc((100%-min(380px,100vw-32px))/2)] [&>chat-widget]:block [&>chat-widget]:w-[min(380px,100vw-32px)] [&>div]:!w-full [&_iframe]:!w-full"
               />
             </div>
 
-            <span aria-hidden="true" className="mx-auto mb-2 h-1.5 w-28 shrink-0 rounded-full bg-ink/70 max-sm:hidden" />
+            <span aria-hidden="true" className="mx-auto mb-2 h-1.5 w-28 shrink-0 rounded-full bg-ink/70" />
           </div>
         </div>
       </div>
@@ -195,19 +197,19 @@ const THINK_MS = 1100;
 const TYPE_MS = 28;
 
 /**
- * Sofia's opening line, typed: the dots first, then the reply letter by letter,
- * then the booking and the calendar land under it. Mounted with the modal, so
- * it plays on every open. Reduced motion gets the finished thread at once.
+ * Sofia's one line, typed: the dots first, then the words letter by letter,
+ * then an arrow down to the call button the line is about. Mounted with the
+ * modal, so it plays on every open. Reduced motion gets the finished line.
  *
  * Only ever rendered once the modal is open, which is after a click — so
  * reading matchMedia in the initial state never runs on the server.
  */
 function Opening({ data }: { data: HomeContent["demo"] }) {
-  const reply = data.reply ?? "";
+  const line = data.callHint ?? "";
   const [shown, setShown] = useState(() =>
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches ? reply.length : 0,
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches ? line.length : 0,
   );
-  const done = shown >= reply.length;
+  const done = shown >= line.length;
 
   useEffect(() => {
     if (done) return;
@@ -217,7 +219,7 @@ function Opening({ data }: { data: HomeContent["demo"] }) {
       tick = window.setInterval(() => {
         n += 1;
         setShown(n);
-        if (n >= reply.length) window.clearInterval(tick);
+        if (n >= line.length) window.clearInterval(tick);
       }, TYPE_MS);
     }, THINK_MS);
     return () => {
@@ -226,11 +228,13 @@ function Opening({ data }: { data: HomeContent["demo"] }) {
     };
     // runs once per open; `shown` and `done` only seed it
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reply]);
+  }, [line]);
+
+  if (!line) return null;
 
   return (
     <>
-      {!reply ? null : shown === 0 ? (
+      {shown === 0 ? (
         <span
           role="status"
           aria-label={`${data.agentName} is typing`}
@@ -245,52 +249,29 @@ function Opening({ data }: { data: HomeContent["demo"] }) {
       ) : (
         <p
           aria-live="polite"
-          className="max-w-[86%] self-start rounded-[16px] rounded-bl-[5px] border border-line bg-white px-3.5 py-2.5 text-[14px] leading-[1.5] text-ink"
+          className="max-w-[88%] self-start rounded-[16px] rounded-bl-[5px] border border-line bg-white px-3.5 py-2.5 text-[15px] leading-[1.5] text-ink"
         >
-          {reply.slice(0, shown)}
+          {line.slice(0, shown)}
           {done ? null : <span className="suite-caret !h-[15px]" />}
         </p>
       )}
 
-      {done
-        ? [
-            { title: data.bookedTitle, sub: data.bookedSub, tone: "green" as const },
-            { title: data.syncedTitle, sub: data.syncedSub, tone: "blue" as const },
-          ]
-            .filter((note) => note.title)
-            .map((note, i) => (
-              <span
-                key={note.title}
-                style={{ animationDelay: `${0.25 + i * 0.35}s` }}
-                className="suite-pop flex items-center gap-2.5 self-start rounded-[14px] border border-line bg-white px-3 py-2"
-              >
-                    <span
-                      className={`grid size-6 shrink-0 place-items-center rounded-full ${
-                        note.tone === "green" ? "bg-[#dcfce7]" : "bg-brand-soft"
-                      }`}
-                    >
-                      {note.tone === "green" ? (
-                        <svg viewBox="0 0 24 24" aria-hidden="true" className="size-3.5 stroke-[#16a34a]" fill="none" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                          <polyline points="20 6 9 17 4 12" />
-                        </svg>
-                      ) : (
-                        <svg viewBox="0 0 24 24" aria-hidden="true" className="size-3.5 stroke-brand" fill="none" strokeWidth="2" strokeLinecap="round">
-                          <rect x="3" y="4" width="18" height="18" rx="2" />
-                          <path d="M16 2v4M8 2v4M3 10h18" />
-                        </svg>
-                      )}
-                    </span>
-                    <span className="block text-left">
-                      <span className="block text-[12.5px] font-semibold leading-tight text-ink">
-                        {note.title}
-                      </span>
-                      <span className="mt-0.5 block text-[11px] leading-tight text-muted">
-                        {note.sub}
-                      </span>
-                    </span>
-                  </span>
-                ))
-        : null}
+      {/* down to the phone button the line is talking about */}
+      {done ? (
+        <span aria-hidden="true" className="suite-pop mt-1 self-center text-brand">
+          <svg
+            viewBox="0 0 24 24"
+            className="size-7 motion-safe:animate-bounce"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M12 4v15M6 13l6 6 6-6" />
+          </svg>
+        </span>
+      ) : null}
     </>
   );
 }

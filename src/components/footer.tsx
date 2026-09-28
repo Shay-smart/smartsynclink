@@ -1,5 +1,6 @@
 import type { GlobalContent } from "@/content/global";
 import { Wordmark } from "./header";
+import { NewsletterForm } from "./newsletter-form";
 import { Container, PhoneIcon, SocialIcon, Tick } from "./ui";
 
 export default function Footer({
@@ -43,36 +44,23 @@ export default function Footer({
               })}
             </ul>
 
-            {/* ponytail: presentational only — wire to an endpoint when the admin panel lands */}
-            <form className="mt-8 max-w-[380px] rounded-2xl bg-page p-6">
+            {/* the sign-up: into GHL as a contact tagged newsletter + newsletter-footer */}
+            <div className="mt-8 max-w-[380px] rounded-2xl bg-page p-6">
               <h3 className="text-[16px] font-medium leading-snug text-[#1e1e1e]">
                 {data.newsletter.heading}
               </h3>
               <p className="mt-2 text-[16px] leading-[1.7] text-[#1e1e1e]">
                 {data.newsletter.body}
               </p>
-
-              <div className="mt-4 flex items-center gap-2 rounded-full border border-line bg-white p-1 pl-4 focus-within:border-brand">
-                <label htmlFor="newsletter-email" className="sr-only">
-                  {data.newsletter.placeholder}
-                </label>
-                <input
-                  id="newsletter-email"
-                  type="email"
-                  name="email"
-                  required
-                  autoComplete="email"
-                  placeholder={data.newsletter.placeholder}
-                  className="w-full min-w-0 flex-1 bg-transparent text-[16px] text-[#1e1e1e] outline-none placeholder:text-muted"
-                />
-                <button
-                  type="submit"
-                  className="shrink-0 rounded-full bg-brand px-5 py-2 text-[16px] font-normal text-white transition-colors hover:bg-brand-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
-                >
-                  {data.newsletter.cta.label}
-                </button>
-              </div>
-            </form>
+              <NewsletterForm
+                where="footer"
+                namePlaceholder={data.newsletter.namePlaceholder}
+                emailPlaceholder={data.newsletter.placeholder}
+                cta={data.newsletter.cta.label}
+                success={data.newsletter.success}
+                className="mt-4"
+              />
+            </div>
           </div>
 
           <div className="grid gap-10 sm:grid-cols-2 lg:col-span-8 lg:grid-cols-4">

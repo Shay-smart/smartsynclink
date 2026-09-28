@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { BlogContent } from "@/content/blog";
 import type { Post } from "@/lib/posts";
 import { formatDate } from "@/lib/format";
+import { NewsletterForm } from "../newsletter-form";
 import { Media } from "../ui";
 
 /**
@@ -176,41 +177,6 @@ export function ColumnHead({
   );
 }
 
-/**
- * Newsletter sign-up.
- *
- * A plain form with no action yet — there is no list to post to. Wiring it to
- * a provider is one `action` attribute; leaving it inert is honest until then.
- */
-export function Newsletter({ blog }: { blog: BlogContent }) {
-  return (
-    <div className="rounded-[18px] bg-white p-6 shadow-card">
-      <p className="text-[17px] font-medium leading-[1.4] tracking-[-0.01em] text-ink">
-        {blog.newsletter.body}
-      </p>
-
-      {/* One pill: the field fills it and the button is flush to the right,
-          its outer corner cut by the parent rather than rounded itself, so
-          the two never disagree about the curve. */}
-      <form className="mt-5 flex overflow-hidden rounded-full border border-line bg-white">
-        <label className="sr-only" htmlFor="newsletter-email">
-          {blog.newsletter.placeholder}
-        </label>
-        <input
-          id="newsletter-email"
-          type="email"
-          required
-          placeholder={blog.newsletter.placeholder}
-          className="min-w-0 flex-1 bg-transparent px-5 py-2.5 text-[14px] text-ink outline-none placeholder:text-muted"
-        />
-        <button className="shrink-0 bg-gradient-to-r from-[#052EFF] to-[#3300EA] px-6 text-[14px] font-medium text-white transition-opacity hover:opacity-90">
-          {blog.newsletter.cta}
-        </button>
-      </form>
-    </div>
-  );
-}
-
 /* ---------------------------------------------------------------------------
    The /blog index tiles.
 
@@ -270,25 +236,16 @@ export function NewsletterBand({ blog }: { blog: BlogContent }) {
             {n.body}
           </p>
 
-          <form className="relative mt-6 w-full max-w-[360px]">
-            <label className="sr-only" htmlFor="blog-newsletter">
-              {n.label}
-            </label>
-            <input
-              id="blog-newsletter"
-              type="email"
-              name="email"
-              required
-              placeholder={n.placeholder}
-              className="h-[52px] w-full rounded-full border border-line bg-white pr-[104px] pl-6 text-[16px] text-ink outline-none placeholder:text-muted focus-visible:border-brand"
-            />
-            <button
-              type="submit"
-              className="absolute top-1.5 right-1.5 h-10 rounded-full bg-gradient-to-r from-[#052EFF] to-[#3300EA] px-5 text-[16px] font-bold text-white transition-opacity hover:opacity-90"
-            >
-              {n.cta}
-            </button>
-          </form>
+          {/* into GHL as a contact tagged newsletter + newsletter-blog */}
+          <NewsletterForm
+            where="blog"
+            size="lg"
+            namePlaceholder={n.namePlaceholder}
+            emailPlaceholder={n.placeholder}
+            cta={n.cta}
+            success={n.success}
+            className="mt-6 w-full max-w-[360px]"
+          />
 
           <p className="mt-3 text-[16px] leading-[24px] text-muted">
             {n.note}{" "}

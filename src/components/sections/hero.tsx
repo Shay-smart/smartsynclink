@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import type { HomeContent } from "@/content/home";
 import { AssistantArt } from "../assistant-art";
-import { HeroChips } from "../hero-chips";
+import { HeroIcons } from "../hero-icons";
 import { BookingBand } from "../booking-band";
 import { FUNNEL_BOARD } from "../funnel/list-screen";
 import { FunnelMetricsScreen } from "../funnel/metrics-screen";
@@ -107,19 +107,16 @@ export function Hero({ data }: { data: HomeContent["hero"] }) {
         />
       </div>
       <Container>
-        {/* shrink-wrapped to the heading, so its corners are the heading's
-            corners — the chips float there. The margins make room for them. */}
-        <div className="relative mx-auto mt-12 mb-16 w-fit max-w-full sm:mt-10 lg:mt-14 lg:mb-20">
-          <h1
-            className="rise text-balance text-center text-[38px] font-medium leading-[1.08] tracking-[-0.03em] text-ink sm:text-[54px] lg:text-[64px]"
-            style={{ "--i": 0 } as React.CSSProperties}
-          >
-            {data.heading}
-          </h1>
-          <HeroChips />
-        </div>
+        <h1
+          className="rise mx-auto text-balance text-center text-[38px] font-medium leading-[1.08] tracking-[-0.03em] text-ink sm:text-[54px] lg:text-[64px]"
+          style={{ "--i": 0 } as React.CSSProperties}
+        >
+          {data.heading}
+        </h1>
+        {/* what the system is made of, under the promise */}
+        <HeroIcons className="rise mt-7" style={{ "--i": 1 } as React.CSSProperties} />
         <p
-          className="rise mx-auto max-w-[740px] text-center text-[20px] leading-[1.65] text-[#1E1E1E]"
+          className="rise mx-auto mt-7 max-w-[740px] text-center text-[20px] leading-[1.65] text-[#1E1E1E]"
           style={{ "--i": 1 } as React.CSSProperties}
         >
           {data.subheading}

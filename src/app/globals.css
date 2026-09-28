@@ -311,86 +311,6 @@ summary::-webkit-details-marker {
   animation-delay: calc(var(--i, 0) * 0.8s);
 }
 
-/* The hero's chips: now and then one is nudged to catch the eye — HeroChips
-   picks which, and which of these, at random. On the chip itself, so it adds
-   to the float on its <li> rather than replacing it. */
-.hero-chip {
-  transition: border-color 0.3s ease;
-}
-.hero-chip[data-nudge] {
-  border-color: rgb(51 0 234 / 0.35);
-}
-.hero-chip[data-nudge="wiggle"] {
-  animation: chipWiggle 0.8s ease-in-out;
-}
-.hero-chip[data-nudge="pop"] {
-  animation: chipPop 0.6s cubic-bezier(0.3, 1.6, 0.5, 1);
-}
-.hero-chip[data-nudge="jump"] {
-  animation: chipJump 0.8s ease-out;
-}
-.hero-chip[data-nudge="glow"] {
-  animation: chipGlow 0.9s ease-out;
-}
-@keyframes chipWiggle {
-  0%,
-  100% {
-    rotate: 0deg;
-  }
-  15% {
-    rotate: -12deg;
-  }
-  35% {
-    rotate: 10deg;
-  }
-  55% {
-    rotate: -6deg;
-  }
-  75% {
-    rotate: 3deg;
-  }
-}
-@keyframes chipPop {
-  0%,
-  100% {
-    scale: 1;
-  }
-  35% {
-    scale: 1.22;
-  }
-  65% {
-    scale: 0.94;
-  }
-}
-@keyframes chipJump {
-  0%,
-  100% {
-    translate: 0 0;
-  }
-  30% {
-    translate: 0 -14px;
-  }
-  55% {
-    translate: 0 0;
-  }
-  72% {
-    translate: 0 -5px;
-  }
-}
-@keyframes chipGlow {
-  from {
-    box-shadow: 0 0 0 0 rgb(51 0 234 / 0.45);
-  }
-  to {
-    box-shadow: 0 0 0 14px rgb(51 0 234 / 0);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero-chip {
-    animation: none !important;
-  }
-}
-
 /* --- final-CTA orb -------------------------------------------------------
  * CSS rather than GSAP: it runs off the compositor, costs no JS, and keeps
  * the section free of the per-frame work that stalled the inbox card.
@@ -601,22 +521,17 @@ summary::-webkit-details-marker {
   transform-origin: 0 0;
   transform: scale(var(--stage-scale, 0));
 }
-/* Sofia's popup screen. On a phone it is the whole screen: a phone drawn
-   inside the visitor's phone could only ever be squeezed. From sm up it is the
-   handset — a phone's 9 : 19.5 at whatever height the window allows (640px at
-   most), and never under 298px wide, which LeadConnector's 260px call pill
-   needs. */
+/* Sofia's popup screen: a phone's 9 : 19.5 on every screen, phones included.
+   The height is what the window allows (640px at most) and the width follows
+   from it, so on a short phone screen the handset gets slimmer, never
+   stubbier. LeadConnector lays its call button out 380px wide, centred and
+   clipped by the thread (see DemoModal), so its 260px pill still fits the
+   narrowest of these. */
 .demo-screen {
-  width: 100vw;
-  height: 100dvh;
-}
-@media (min-width: 640px) {
-  .demo-screen {
-    height: min(640px, calc(100dvh - 7rem));
-    width: max(298px, calc(min(640px, calc(100dvh - 7rem)) * 9 / 19.5));
-    max-width: calc(100vw - 3.25rem);
-    border-radius: 36px;
-  }
+  height: min(640px, calc(100dvh - 5rem));
+  width: calc(min(640px, calc(100dvh - 5rem)) * 9 / 19.5);
+  max-width: calc(100vw - 3.25rem);
+  border-radius: 36px;
 }
 
 /* While Sofia's popup is open (DemoModal sets data-demo) the site's chat

@@ -138,6 +138,36 @@ export async function upsertContact(person: {
   return id;
 }
 
+/**
+ * A newsletter sign-up: the person upserted by email, then tagged.
+ *
+ * The tags go on in a second call, to the add-tags endpoint, rather than in
+ * the upsert — an upsert that carries tags replaces whatever tags a returning
+ * contact already has (a booking's, say). Adding them never removes any.
+ */
+export async function subscribeContact(person: { name: string; email: string; source: string }, tags: string[]) {
+  const [firstName, ...rest] = person.name.trim().split(/\s+/);
+  const data = await call<{ contact?: { id?: string } }>("/contacts/upsert", {
+    version: CONTACTS,
+    method: "POST",
+    body: {
+      locationId: process.env.GHL_LOCATION_ID,
+      name: person.name,
+      firstName,
+      lastName: rest.join(" ") || undefined,
+      email: person.email,
+      source: person.source,
+    },
+  });
+
+  const id = data.contact?.id;
+  if (!id) throw new GhlError("contact upsert returned no id", 502);
+  if (tags.length) {
+    await call(`/contacts/${id}/tags`, { version: CONTACTS, method: "POST", body: { tags } });
+  }
+  return id;
+}
+
 export async function createAppointment(appointment: {
   calendarId: string;
   contactId: string;

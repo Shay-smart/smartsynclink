@@ -468,11 +468,8 @@ export const defaultHomeContent = {
     agentBadge: "AI",
     role: "Support Agent",
     avatar: { src: "", alt: "Sofia, AI support agent" } as Media,
-    reply: "Sure! I can book a consultation for next Tuesday.",
-    bookedTitle: "Appointment Booked",
-    bookedSub: "Just now",
-    syncedTitle: "Calendar Synced",
-    syncedSub: "Automated",
+    /** What Sofia types when the phone opens, pointing at the call button under it. */
+    callHint: "Please press the phone button to test our voice AI — it's totally free.",
     /** The LeadConnector voice widget. Empty hides the embed. */
     widgetId: "69e0ba00663add6222d0a27d",
   },

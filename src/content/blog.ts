@@ -35,8 +35,11 @@ export const defaultBlog = {
     label: "Newsletter",
     heading: "Don't want to miss anything?",
     body: "Get SmartSyncLink updates, tutorials and tips right in your mailbox.",
+    namePlaceholder: "Your name",
     placeholder: "Please, enter your e-mail",
     cta: "Get",
+    /** Shown in place of the form once the person is in GHL. */
+    success: "Thanks — you're on the list.",
     note: "By entering your email, you agree to our",
     noteLink: { label: "Privacy Policy.", href: "/privacy" },
     image: { src: "", alt: "" },
