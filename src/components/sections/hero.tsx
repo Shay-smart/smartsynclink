@@ -90,6 +90,21 @@ const SCREENS: HeroScreen[] = [
  */
 const CLIP_SECONDS = [undefined, 2.5];
 
+/**
+ * Client preview: the landscape "Plugged In" cut plays alone, on a loop, and
+ * the playlist above — the dashboard clips and the product screens — sits out.
+ * Nothing is deleted; set SHOW_PLAYLIST back to true to return to it.
+ *
+ * ponytail: streamed straight from the ClickUp attachment; if the cut stays,
+ * upload it to the media library so a ClickUp clean-up can't blank the hero.
+ */
+const SHOW_PLAYLIST = false;
+const PREVIEW_CLIP = {
+  src: "https://t90181364563.p.clickup-attachments.com/t90181364563/bc0688fc-7af2-427f-801e-402adc64ac10/SmartSync-Plugged-In-v3-16x9.mp4?open=true",
+  alt: "SmartSync, plugged in",
+  wide: true,
+};
+
 export function Hero({ data }: { data: HomeContent["hero"] }) {
   return (
     <section className="hero-backdrop relative z-10 overflow-hidden bg-[#fafaf9] pb-10 pt-28 sm:pt-32 lg:pt-46">
@@ -127,11 +142,16 @@ export function Hero({ data }: { data: HomeContent["hero"] }) {
         className="rise relative mt-10 flex justify-center lg:mt-14"
         style={{ "--i": 2 } as React.CSSProperties}
       >
-        {/* wider than the clip on desktop: the clips stay 700px, the product screens get the room */}
-        <div className="relative h-[300px] w-full px-3 md:h-[420px] lg:h-[500px] lg:max-w-[1100px] lg:px-6">
+        {/* wider than the clip on desktop: the clips stay 700px, the product screens get the room.
+            The preview cut sizes the box itself — 16:9 at full width, ~500px tall on desktop */}
+        <div
+          className={`relative w-full px-3 lg:px-6 ${
+            SHOW_PLAYLIST ? "h-[300px] md:h-[420px] lg:h-[500px] lg:max-w-[1100px]" : "mb-10 lg:mb-14 lg:max-w-[940px]"
+          }`}
+        >
           <HeroVideos
-            videos={data.videos ?? []}
-            screens={SCREENS}
+            videos={SHOW_PLAYLIST ? (data.videos ?? []) : [PREVIEW_CLIP]}
+            screens={SHOW_PLAYLIST ? SCREENS : []}
             clipSeconds={CLIP_SECONDS}
           />
         </div>

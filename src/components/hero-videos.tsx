@@ -57,7 +57,8 @@ export function HeroVideos({
   screens = [],
   clipSeconds = [],
 }: {
-  videos: Media[];
+  /** `wide`: a finished landscape cut with its own backdrop — shown whole in a rounded frame, never cropped or blended. */
+  videos: (Media & { wide?: boolean })[];
   screens?: HeroScreen[];
   /**
    * How long clip *n* should take on screen, in seconds. A clip longer than
@@ -120,6 +121,7 @@ export function HeroVideos({
   }
 
   if (slides.length === 1) {
+    if (clips[0].wide) return <WideClip clip={clips[0]} />;
     return (
       <video
         autoPlay
@@ -194,5 +196,49 @@ export function HeroVideos({
         </SwiperSlide>
       ))}
     </Swiper>
+  );
+}
+
+/**
+ * A finished landscape cut with its own backdrop: shown whole in a rounded
+ * frame, never cropped or blended. Autoplay only runs muted, so it starts
+ * silent and the button turns the sound on — set on the element directly, in
+ * the tap itself, which is what iOS needs to allow audio (and a play() for
+ * Low Power Mode, where the muted autoplay never started either). It sits top
+ * right: the cut burns its subtitles in along the bottom.
+ */
+function WideClip({ clip }: { clip: Media }) {
+  const video = useRef<HTMLVideoElement>(null);
+  const [muted, setMuted] = useState(true);
+
+  const toggle = () => {
+    const el = video.current;
+    if (!el) return;
+    el.muted = !el.muted;
+    if (!el.muted) el.play().catch(() => {});
+    setMuted(el.muted);
+  };
+
+  return (
+    <div className="relative mx-auto aspect-video w-full overflow-hidden rounded-[14px] shadow-[0_20px_50px_-24px_rgba(14,14,20,0.35)]">
+      <video ref={video} autoPlay loop muted playsInline aria-label={clip.alt} className="h-full w-full object-cover">
+        <source src={clip.src} />
+      </video>
+      <button
+        type="button"
+        onClick={toggle}
+        aria-pressed={!muted}
+        aria-label={muted ? "Turn sound on" : "Turn sound off"}
+        className={`absolute top-3 right-3 flex h-10 items-center justify-center gap-2 rounded-full bg-black/50 text-[14px] font-medium text-white backdrop-blur transition-colors hover:bg-black/65 sm:top-4 sm:right-4 ${
+          muted ? "px-4" : "w-10"
+        }`}
+      >
+        <svg viewBox="0 0 24 24" className="size-[18px] shrink-0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M11 5 6 9H2v6h4l5 4z" />
+          {muted ? <path d="m22 9-6 6M16 9l6 6" /> : <path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14" />}
+        </svg>
+        {muted ? <span aria-hidden="true">Tap for sound</span> : null}
+      </button>
+    </div>
   );
 }
