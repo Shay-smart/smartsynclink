@@ -171,8 +171,9 @@ export function Pricing({ data }: { data: HomeContent["pricing"] }) {
 function FunnelBanner({ data }: { data: HomeContent["pricing"]["funnel"] }) {
   return (
     <Reveal className="mt-16 grid gap-4 md:mt-20 lg:grid-cols-3" stagger={0.12}>
-      <article className="relative overflow-hidden rounded-[28px] border border-line bg-white p-7 sm:p-9 lg:col-span-2">
-        <FunnelArt className="pointer-events-none absolute top-1/2 -right-4 hidden h-[86%] -translate-y-1/2 md:block" />
+      <article className="relative flex flex-col overflow-hidden rounded-[28px] border border-line bg-white p-7 sm:p-9 md:block lg:col-span-2">
+        {/* a phone gets it under the copy, centred; from md it sits beside the copy */}
+        <FunnelArt className="pointer-events-none order-last mx-auto mt-8 block w-[220px] max-w-full md:absolute md:top-1/2 md:-right-4 md:mx-0 md:mt-0 md:h-[86%] md:w-auto md:-translate-y-1/2" />
         <div className="relative md:max-w-[58%]">
           <SuiteLockup id="pricing-funnel-lockup" product="funnel" size={28} />
           <h3 className="mt-5 text-balance text-[26px] font-medium leading-[1.15] tracking-[-0.02em] text-ink sm:text-[30px]">
