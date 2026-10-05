@@ -205,7 +205,7 @@ export const defaultGlobal = {
     },
     contact: {
       phone: "+1 737 252-4262",
-      whatsapp: "",
+      whatsapp: "(555) 989-9218",
       email: "info@smartsynclink.com",
     },
     copyright:
