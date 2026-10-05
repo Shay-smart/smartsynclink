@@ -205,10 +205,11 @@ export const defaultGlobal = {
     },
     contact: {
       phone: "+1 737 252-4262",
-      whatsapp: "(555) 989-9218",
+      whatsapp: "",
       email: "info@smartsynclink.com",
     },
-    copyright: "© 2026 Smart Sync Link. All rights reserved.",
+    copyright:
+      "© 2026 Babylon Enterprise LLC d/b/a Smart SyncLink · 8911 N Capital of Texas Hwy, Suite 4200-349, Austin, TX 78759. All rights reserved.",
     badges: [
       "Enterprise-Grade Security",
       "99.9% Uptime",
